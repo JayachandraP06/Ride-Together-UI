@@ -1,6 +1,5 @@
-
 import axios from 'axios';
-import { RegisterData, SearchParams } from '../types';
+import { RegisterData, SearchParams, Booking } from '../types';
 
 // Create axios instance with base configuration
 const api = axios.create({
@@ -113,13 +112,13 @@ export const bookingsAPI = {
         ...bookingData,
         userId: '1',
         totalPrice: bookingData.seatsBooked * 25,
-        status: 'confirmed',
+        status: 'confirmed' as const,
         bookingDate: new Date().toISOString()
       }
     };
   },
 
-  getUserBookings: async (userId: string) => {
+  getUserBookings: async (userId: string): Promise<{ data: Booking[] }> => {
     await mockDelay();
     return {
       data: [
@@ -129,7 +128,7 @@ export const bookingsAPI = {
           userId: userId,
           seatsBooked: 2,
           totalPrice: 50,
-          status: 'confirmed',
+          status: 'confirmed' as const,
           bookingDate: '2024-06-02T10:00:00Z',
           ride: {
             id: '1',
